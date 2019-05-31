@@ -10,6 +10,9 @@ C:\Program Files (x86)\Java\jdk1.8.0_91 // 要根据自己的实际路径配置
 %JAVA_HOME%\bin;%JAVA_HOME%\jre\bin;
 
 ## 路线
-1. Collection  Thread  IO  网络
-2. SpringBoot 
-3. nginx MQ redis
+1. java本身 
+    * Collection  Thread  IO  网络
+2. java的框架
+    * SpringBoot 
+3. java使用的 **技术** **组件**
+    * nginx MQ redis

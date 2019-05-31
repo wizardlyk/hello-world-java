@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/hello-world-java.iml" filepath="$PROJECT_DIR$/.idea/hello-world-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hello-world-java.iml" filepath="$PROJECT_DIR$/hello-world-java.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hello-world-java_main.iml" filepath="$PROJECT_DIR$/.idea/modules/hello-world-java_main.iml" group="hello-world-java" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/hello-world-java_test.iml" filepath="$PROJECT_DIR$/.idea/modules/hello-world-java_test.iml" group="hello-world-java" />
     </modules>
   </component>
 </project>
