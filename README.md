@@ -16,3 +16,6 @@ C:\Program Files (x86)\Java\jdk1.8.0_91 // 要根据自己的实际路径配置
     * SpringBoot 
 3. java使用的 **技术** **组件**
     * nginx MQ redis
+    
+## .gitignore
+.idea 目录或者文件已经被 git 跟踪，此时再加入 .gitignore 就无法屏蔽了。
