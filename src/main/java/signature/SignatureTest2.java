@@ -1,5 +1,7 @@
 package signature;
 
+import org.apache.commons.codec.binary.Base64;
+
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.UnsupportedEncodingException;
@@ -8,14 +10,12 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
-import org.apache.commons.codec.binary.Base64;
-
 /**
  * @author lyk
  * @Date 2019/6/5 13:30
  * @Version 1.0
  **/
-public class SignatureTest {
+public class SignatureTest2 {
 
     public static void main(String[] args) throws UnsupportedEncodingException {
 
@@ -73,7 +73,7 @@ public class SignatureTest {
                 "&baseUrl=aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS_ogIzmmK_jgIEudHh0" +
                 "&expire=28800" +
                 "&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a" +
-                "&test=yang%2Aworld";
+                "&test=aw%20sl";
         getSingatureFromRequest(queryString5, "HPNjZLxB8aHdwxuKGXrbiIPYIdd6hH");
     }
 
