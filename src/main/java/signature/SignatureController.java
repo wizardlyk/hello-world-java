@@ -1,13 +1,12 @@
 package signature;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.web.bind.annotation.*;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -15,36 +14,30 @@ import java.util.*;
 
 /**
  * @author lyk
- * @Date 2019/6/5 13:30
+ * @Date 2019/6/13 13:43
  * @Version 1.0
  **/
-public class SignatureTest2 {
-
-    public static void main(String[] args) throws UnsupportedEncodingException {
-        //单机
-        String queryString =
-                "AccessKeyId=ItvWwUyji3H6tRyv" +
-                        "&Signature=kkx6Av1msTyCN5gQxRhYvQw9cBE%3D" +
-                        "&baseUrl=aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS_ogIzmmK_jgIEudHh0&expire=28800" +
-                        "&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a";
-//        getSingatureFromRequest(queryString,"YA77gaiu2wItZqnwtBAcKQl12JARSe");
-
+@RestController
+@RequestMapping("/test")
+public class SignatureController {
+    @RequestMapping(value = "/signature", method = RequestMethod.GET)
+    public void testSignature(HttpServletRequest request) throws UnsupportedEncodingException {
         //预发布
-        String queryString2 =
-                "AccessKeyId=IE6vJaB8SUJd1lH6" +
-                        "&Signature=kkx6Av1msTyCN5gQxRhYvQw9cBE%3D" ;
-//                        "&baseUrl=aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS_ogIzmmK_jgIEudHh0&expire=28800" +
-//                        "&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a";
-        getSingatureFromRequest(queryString2,"HPNjZLxB8aHdwxuKGXrbiIPYIdd6hH");
+        getSingatureFromRequest(request, "HPNjZLxB8aHdwxuKGXrbiIPYIdd6hH");
     }
 
-
-    public static String percentEncode(String value) throws UnsupportedEncodingException {
-        return value != null ? URLEncoder.encode(value, "utf-8").replace("+", "%20")
-                .replace("*", "%2A").replace("%7E", "~") : null;
-    }
-
-    public static void getSingatureFromRequest(String queryString, String accessSecret) throws UnsupportedEncodingException {
+    public static void getSingatureFromRequest(HttpServletRequest request, String accessSecret) throws UnsupportedEncodingException {
+        String queryString = "";
+        Map<String, String[]> map = request.getParameterMap();
+        for (Map.Entry<String, String[]> entry : map.entrySet()) {
+            queryString += entry.getKey() + "=";
+            for (int i = 0; i < entry.getValue().length; i++) {
+                queryString += entry.getValue()[i];
+            }
+            queryString += "&";
+        }
+        queryString = queryString.substring(0, queryString.length() - 1);
+        System.out.println("queryString: " + queryString);
         if (queryString != null) {
             Map temp = new HashMap(2);
             String[] querys = queryString.split("&");
@@ -57,9 +50,9 @@ public class SignatureTest2 {
                 }
             }
             String signature = (String) temp.get("Signature");
-            signature = URLDecoder.decode(signature, "utf-8");
             String accessKeyId = (String) temp.get("AccessKeyId");
             if (signature == null || accessKeyId == null) {
+                System.out.println("Signature or AccessKeyId is null");
                 return;
             }
             System.out.println("Signature: " + signature + ", AccessKeyId: " + accessKeyId);
@@ -82,7 +75,6 @@ public class SignatureTest2 {
             }
             canonicalizedQueryString = canonicalizedQueryString.substring(0, canonicalizedQueryString.length() - 1);
             String stringToSign = "GET" + "&" + percentEncode("/") + "&" + percentEncode(canonicalizedQueryString);
-            stringToSign = "GET&%2F&%3D%26AccessKeyId%3DIE6vJaB8SUJd1lH6%26SignatureNonce%3Ded4a50ba361228c0b5916bf06d2ff45a%26baseUrl%3DaHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS8xLmpwZw~~%26expire%3D28800%26test%3D";
             System.out.println("stringToSign: " + stringToSign);
             //Base64 encode
             Mac mac;
@@ -110,4 +102,8 @@ public class SignatureTest2 {
         return;
     }
 
+    public static String percentEncode(String value) throws UnsupportedEncodingException {
+        return value != null ? URLEncoder.encode(value, "utf-8").replace("+", "%20")
+                .replace("*", "%2A").replace("%7E", "~") : null;
+    }
 }

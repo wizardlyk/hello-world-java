@@ -18,4 +18,7 @@ dependencies {
     compile('org.apache.commons:commons-lang3:3.5')
     compile('commons-codec:commons-codec:1.10')
 
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.1.5.RELEASE'
+
 }
