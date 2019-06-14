@@ -74,6 +74,7 @@ public class SignatureController {
                 canonicalizedQueryString += key + "=" + temp.get(key) + "&";
             }
             canonicalizedQueryString = canonicalizedQueryString.substring(0, canonicalizedQueryString.length() - 1);
+            System.out.println("canonicalizedQueryString" + canonicalizedQueryString);
             String stringToSign = "GET" + "&" + percentEncode("/") + "&" + percentEncode(canonicalizedQueryString);
             System.out.println("stringToSign: " + stringToSign);
             //Base64 encode
