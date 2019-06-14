@@ -43,7 +43,7 @@ public class SignatureTest {
 //                "&baseUrl=aHR0cHM6Ly91bmljbG91ZC5vc3MtY24tbm9ydGgtMS51bmljbG91ZHNydi5jb20vMS5wbmc~" +
 //                "&expire=28800" +
 //                "&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a";
-//        getSingatureFromRequest(queryString3, "ZANAlIFipkBwW4v1vAs9fHOnbgk%3D");
+//        getSingatureFromRequest(queryString3, "YA77gaiu2wItZqnwtBAcKQl12JARSe");
 
         String baseUrl = decryptBase64ToStdFormat("aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS9yb3V0ZXIudHh0");
         byte[] base64decodedBytes = java.util.Base64.getDecoder().decode(baseUrl);
@@ -69,11 +69,14 @@ public class SignatureTest {
 
         //ys
         String queryString5 = "AccessKeyId=IE6vJaB8SUJd1lH6" +
-                "&Signature=e0KbuadfpBMSc0nnfhsb6jEfCmU%3D" +
+                "&Signature=QnTA4ifbs8Y2QJ35SEED6qcov8s%3D" +
                 "&baseUrl=aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS_ogIzmmK_jgIEudHh0" +
                 "&expire=28800" +
                 "&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a" +
-                "&test=yang%2Aworld";
+//                "&test=b~b+b.b-b_bb=b" ;
+                "&test=g*g" ;
+//        String temp = "AccessKeyId=IE6vJaB8SUJd1lH6&Signature=QnTA4ifbs8Y2QJ35SEED6qcov8s%3D&baseUrl=aHR0cHM6Ly90ZXN0MDYxMS5zMy50ZXN0LmNvbS_ogIzmmK_jgIEudHh0&expire=28800&SignatureNonce=ed4a50ba361228c0b5916bf06d2ff45a&test=b~b+b.b-b_b%2Ab=b";
+//        System.out.println(queryString5.equals(temp));
         getSingatureFromRequest(queryString5, "HPNjZLxB8aHdwxuKGXrbiIPYIdd6hH");
     }
 
@@ -86,9 +89,9 @@ public class SignatureTest {
             for (String kvs : querys) {
                 String[] kvPairs = kvs.split("=", 2);
                 if (kvPairs.length == 1) {
-                    temp.put(kvPairs[0], "");
+                    temp.put(percentEncode(kvPairs[0]), "");
                 } else if (kvPairs.length == 2) {
-                    temp.put(kvPairs[0], kvPairs[1]);
+                    temp.put(percentEncode(kvPairs[0]), percentEncode(kvPairs[1]));
                 }
             }
             String signature = (String) temp.get("Signature");
@@ -116,10 +119,12 @@ public class SignatureTest {
                 canonicalizedQueryString += key + "=" + temp.get(key) + "&";
             }
             canonicalizedQueryString = canonicalizedQueryString.substring(0, canonicalizedQueryString.length() - 1);
-            String stringToSign = "GET" + "&" + URLEncoder.encode("/", "utf-8") + "&" + URLEncoder.encode(canonicalizedQueryString, "utf-8");
+            System.out.println(canonicalizedQueryString);
+//            String stringToSign = "GET" + "&" + URLEncoder.encode("/", "utf-8") + "&" + URLEncoder.encode(canonicalizedQueryString, "utf-8");
+            String stringToSign = "GET" + "&" + percentEncode("/") + "&" + percentEncode(canonicalizedQueryString);
             System.out.println("stringToSign: " + stringToSign);
-            String newStringToSign = stringToSign.replaceAll("%7E", "~").replaceAll("\\*", "%2A").replaceAll("\\+", "%20");
-            System.out.println("newStringToSign: " + newStringToSign);
+//            String newStringToSign = stringToSign.replaceAll("%7E", "~").replaceAll("\\*", "%2A").replaceAll("\\+", "%20");
+//            System.out.println("newStringToSign: " + newStringToSign);
             //Base64 encode
             Mac mac;
             try {
@@ -135,8 +140,9 @@ public class SignatureTest {
                 e.printStackTrace();
                 return;
             }
-            byte[] signData = mac.doFinal(newStringToSign.getBytes());
-            String signedStr = URLEncoder.encode(Base64.encodeBase64String(signData), "utf-8");
+            byte[] signData = mac.doFinal(stringToSign.getBytes());
+//            String signedStr = URLEncoder.encode(Base64.encodeBase64String(signData), "utf-8");
+            String signedStr = percentEncode(Base64.encodeBase64String(signData));
             if (!signature.equals(signedStr)) {
                 System.out.println("signature is not same, queried: " + signature + ", signed: " + signedStr);
                 return;
@@ -146,6 +152,11 @@ public class SignatureTest {
         }
         System.out.println("queryString is null");
         return;
+    }
+
+    public static String percentEncode(String value) throws UnsupportedEncodingException {
+        return value != null ? URLEncoder.encode(value, "utf-8").replace("+", "%20")
+                .replace("*", "%2A").replace("%7E", "~") : null;
     }
 
     public static String decryptBase64ToStdFormat(String str) {
