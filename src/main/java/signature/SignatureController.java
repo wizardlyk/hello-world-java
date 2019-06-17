@@ -23,7 +23,8 @@ public class SignatureController {
     @RequestMapping(value = "/signature", method = RequestMethod.GET)
     public void testSignature(HttpServletRequest request) throws UnsupportedEncodingException {
         //预发布
-        getSingatureFromRequest(request, "HPNjZLxB8aHdwxuKGXrbiIPYIdd6hH");
+        //a~a+a.a-a_a*a=a
+        getSingatureFromRequest(request, "hO5DcRvIwDgMPy7vgOnvq37yPXeAPQ");
     }
 
     public static void getSingatureFromRequest(HttpServletRequest request, String accessSecret) throws UnsupportedEncodingException {
