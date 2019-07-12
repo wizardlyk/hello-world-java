@@ -24,7 +24,7 @@ public class SignatureController {
     public void testSignature(HttpServletRequest request) throws UnsupportedEncodingException {
         //预发布
         //a~a+a.a-a_a*a=a
-        getSingatureFromRequest(request, "hO5DcRvIwDgMPy7vgOnvq37yPXeAPQ");
+        getSingatureFromRequest(request, "e76HUKfiJs7BDJM0lGnixkZw5gvMz1");
     }
 
     public static void getSingatureFromRequest(HttpServletRequest request, String accessSecret) throws UnsupportedEncodingException {
