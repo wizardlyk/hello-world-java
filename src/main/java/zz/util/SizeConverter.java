@@ -1,4 +1,4 @@
-package zz;
+package zz.util;
 
 /**
  * @author lyk

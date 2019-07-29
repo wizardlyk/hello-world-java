@@ -26,5 +26,11 @@ public class ExceptionTest {
         ArrayIndexOutOfBoundsException arrayIndexOutOfBoundsException = new ArrayIndexOutOfBoundsException("数组下标越界");
         System.out.println(arrayIndexOutOfBoundsException);
         arrayIndexOutOfBoundsException.printStackTrace();
+
+        test();
+    }
+
+   static void test() throws NullPointerException{
+        return;
     }
 }

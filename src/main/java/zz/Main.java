@@ -11,6 +11,7 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -48,6 +49,31 @@ public class Main {
         test1();
         List list = new ArrayList();
         System.out.println(list.size());
+        String a = "water";
+        int c = 13;
+
+//        test3(list, a, c -> test2(a, c));
+//        consume(200, (x) - > System.out.println(x));
+        String s = new String("abc");
+        String s1 = "abc";
+        String s2 = new String("abc");
+        String s3 = "abc";
+        System.out.println(s == s1);
+        System.out.println(s == s2);
+        System.out.println(s1 == s2);
+        System.out.println(s1 == s3);
+    }
+
+    public static void consume(double money, Consumer<Double> consumer) {
+        consumer.accept(money);
+    }
+
+    private static void test3(List list, String a, int b) {
+
+    }
+
+    private static void test2(String a, int b) {
+
     }
 
     private static void test1() {
